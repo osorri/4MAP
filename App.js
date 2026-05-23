@@ -171,40 +171,45 @@ export default function App() {
             <ScrollView contentContainerStyle={styles.container}>
                 <Text style={styles.title}>Location</Text>
 
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Data</Text>
+                {loading && (
+                    <View style={styles.card}>
+                        <ActivityIndicator />
+                        <Text style={styles.text}>Loading...</Text>
+                    </View>
+                )}
 
-                    {loading && (
-                        <View style={styles.center}>
-                            <ActivityIndicator />
-                            <Text style={styles.text}>Loading...</Text>
-                        </View>
-                    )}
+                {error && (
+                    <View style={styles.card}>
+                        <Text style={styles.error}>Error</Text>
+                        <Text style={styles.text}>{state.error}</Text>
+                    </View>
+                )}
 
-                    {error && (
-                        <View style={styles.center}>
-                            <Text style={styles.error}>Error</Text>
-                            <Text style={styles.text}>{state.error}</Text>
-                        </View>
-                    )}
-
-                    {ready && (
-                        <View>
-                            <Text style={styles.text}>Lat: {latText}</Text>
-                            <Text style={styles.text}>Lon: {lonText}</Text>
-
-                            <Text style={styles.label}>Full address</Text>
-                            <Text style={styles.text}>{state.full}</Text>
-
-                            <Text style={styles.label}>Short address</Text>
-                            <Text style={styles.text}>{state.short}</Text>
-
-                            <Text style={styles.small}>
-                                Updated: {state.updatedAt}
+                {ready && (
+                    <>
+                        <View style={styles.card}>
+                            <Text style={styles.cardTitle}>Coordinates</Text>
+                            <Text style={styles.text}>Latitude: {latText}</Text>
+                            <Text style={styles.text}>
+                                Longitude: {lonText}
                             </Text>
                         </View>
-                    )}
-                </View>
+
+                        <View style={styles.card}>
+                            <Text style={styles.cardTitle}>Full address</Text>
+                            <Text style={styles.text}>{state.full}</Text>
+                        </View>
+
+                        <View style={styles.card}>
+                            <Text style={styles.cardTitle}>Short address</Text>
+                            <Text style={styles.text}>{state.short}</Text>
+                        </View>
+
+                        <Text style={styles.small}>
+                            Updated: {state.updatedAt}
+                        </Text>
+                    </>
+                )}
 
                 <Pressable style={styles.btn} onPress={load}>
                     <Text style={styles.btnText}>Refresh</Text>
@@ -221,20 +226,23 @@ const styles = StyleSheet.create({
     title: { fontSize: 30, color: "white", fontWeight: "700" },
 
     card: {
-        backgroundColor: "#111827",
+        backgroundColor: "#0b1220",
         padding: 16,
         borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#334155",
     },
 
-    cardTitle: { color: "white", fontSize: 18, marginBottom: 10 },
+    cardTitle: {
+        color: "white",
+        fontSize: 18,
+        marginBottom: 10,
+        fontWeight: "700",
+    },
 
     text: { color: "#cbd5e1", marginBottom: 6 },
 
-    label: { color: "#60a5fa", marginTop: 10, fontWeight: "700" },
-
     small: { color: "#64748b", marginTop: 10, fontSize: 12 },
-
-    center: { alignItems: "center", padding: 20, gap: 8 },
 
     error: { color: "#f87171", fontWeight: "700" },
 
