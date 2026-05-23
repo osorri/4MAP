@@ -15,6 +15,7 @@ import {
     View,
 } from "react-native";
 import * as Location from "expo-location";
+import MapView, { Marker } from "react-native-maps";
 
 const NOMINATIM_URL = "https://nominatim.openstreetmap.org/reverse";
 const TIMEOUT = 12000;
@@ -207,6 +208,25 @@ export default function App() {
                                 <Text style={styles.text}>{state.short}</Text>
                             </View>
 
+                            <View style={styles.mapCard}>
+                                <MapView
+                                    style={styles.map}
+                                    region={{
+                                        latitude: state.lat,
+                                        longitude: state.lon,
+                                        latitudeDelta: 0.01,
+                                        longitudeDelta: 0.01,
+                                    }}
+                                >
+                                    <Marker
+                                        coordinate={{
+                                            latitude: state.lat,
+                                            longitude: state.lon,
+                                        }}
+                                    />
+                                </MapView>
+                            </View>
+
                             <Text style={styles.small}>
                                 Updated: {state.updatedAt}
                             </Text>
@@ -312,5 +332,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
+    },
+
+    mapCard: {
+        height: 220,
+        borderRadius: 16,
+        overflow: "hidden",
+        borderWidth: 1,
+        borderColor: "#334155",
+    },
+
+    map: {
+        width: "100%",
+        height: "100%",
     },
 });
