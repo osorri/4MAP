@@ -168,62 +168,87 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.safe}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <Text style={styles.title}>Location</Text>
+            <View style={styles.wrapper}>
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Text style={styles.title}>Location</Text>
 
-                {loading && (
-                    <View style={styles.card}>
-                        <ActivityIndicator />
-                        <Text style={styles.text}>Loading...</Text>
-                    </View>
-                )}
-
-                {error && (
-                    <View style={styles.card}>
-                        <Text style={styles.error}>Error</Text>
-                        <Text style={styles.text}>{state.error}</Text>
-                    </View>
-                )}
-
-                {ready && (
-                    <>
+                    {error && (
                         <View style={styles.card}>
-                            <Text style={styles.cardTitle}>Coordinates</Text>
-                            <Text style={styles.text}>Latitude: {latText}</Text>
-                            <Text style={styles.text}>
-                                Longitude: {lonText}
+                            <Text style={styles.error}>Error</Text>
+                            <Text style={styles.text}>{state.error}</Text>
+                        </View>
+                    )}
+
+                    {ready && (
+                        <>
+                            <View style={styles.card}>
+                                <Text style={styles.cardTitle}>
+                                    Coordinates
+                                </Text>
+                                <Text style={styles.text}>
+                                    Latitude: {latText}
+                                </Text>
+                                <Text style={styles.text}>
+                                    Longitude: {lonText}
+                                </Text>
+                            </View>
+
+                            <View style={styles.card}>
+                                <Text style={styles.cardTitle}>
+                                    Full address
+                                </Text>
+                                <Text style={styles.text}>{state.full}</Text>
+                            </View>
+
+                            <View style={styles.card}>
+                                <Text style={styles.cardTitle}>
+                                    Short address
+                                </Text>
+                                <Text style={styles.text}>{state.short}</Text>
+                            </View>
+
+                            <Text style={styles.small}>
+                                Updated: {state.updatedAt}
                             </Text>
-                        </View>
-
-                        <View style={styles.card}>
-                            <Text style={styles.cardTitle}>Full address</Text>
-                            <Text style={styles.text}>{state.full}</Text>
-                        </View>
-
-                        <View style={styles.card}>
-                            <Text style={styles.cardTitle}>Short address</Text>
-                            <Text style={styles.text}>{state.short}</Text>
-                        </View>
-
-                        <Text style={styles.small}>
-                            Updated: {state.updatedAt}
-                        </Text>
-                    </>
-                )}
+                        </>
+                    )}
+                </ScrollView>
 
                 <Pressable style={styles.btn} onPress={load}>
                     <Text style={styles.btnText}>Refresh</Text>
                 </Pressable>
-            </ScrollView>
+
+                {loading && (
+                    <View style={styles.loadingOverlay}>
+                        <View style={styles.loadingBox}>
+                            <ActivityIndicator />
+                            <Text style={styles.text}>Loading...</Text>
+                        </View>
+                    </View>
+                )}
+            </View>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     safe: { flex: 1, backgroundColor: "#0f172a" },
-    container: { padding: 20, gap: 16 },
 
-    title: { fontSize: 30, color: "white", fontWeight: "700" },
+    wrapper: {
+        flex: 1,
+    },
+
+    container: {
+        padding: 20,
+        gap: 16,
+        paddingBottom: 40,
+    },
+
+    title: {
+        fontSize: 30,
+        color: "white",
+        fontWeight: "700",
+    },
 
     card: {
         backgroundColor: "#0b1220",
@@ -240,18 +265,52 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
 
-    text: { color: "#cbd5e1", marginBottom: 6 },
+    text: {
+        color: "#cbd5e1",
+        marginBottom: 6,
+    },
 
-    small: { color: "#64748b", marginTop: 10, fontSize: 12 },
+    small: {
+        color: "#64748b",
+        marginTop: 10,
+        fontSize: 12,
+    },
 
-    error: { color: "#f87171", fontWeight: "700" },
+    error: {
+        color: "#f87171",
+        fontWeight: "700",
+    },
 
     btn: {
         backgroundColor: "#2563eb",
         padding: 14,
         borderRadius: 12,
         alignItems: "center",
+        margin: 16,
     },
 
-    btnText: { color: "white", fontWeight: "700" },
+    btnText: {
+        color: "white",
+        fontWeight: "700",
+    },
+
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: "rgba(15, 23, 42, 0.8)",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 10,
+    },
+
+    loadingBox: {
+        width: 140,
+        height: 140,
+        backgroundColor: "#0b1220",
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#334155",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
+    },
 });
